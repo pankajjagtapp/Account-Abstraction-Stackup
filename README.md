@@ -179,3 +179,12 @@ Distributed under the MIT License. See [LICENSE](./LICENSE) for more information
 # Contact
 
 Feel free to direct any technical related questions to the `dev-hub` channel in the [Stackup Discord](https://discord.gg/FpXmvKrNed).
+
+{
+  "bundlerUrl": "https://app.stackup.sh/api/v1/bundler/d34f4043b640040d62a0a8d8a565aba50ccb8e6c546910a841688784cb8836f2",
+  "rpcUrl": "https://goerli.infura.io/v3/1ad075f97851475eb94487828aa4de16",
+  "signingKey": "0xbdbd1b864fce8e92a789772287119ccf147473262a71e037434a732dbc2af64d",
+  "entryPoint": "0x0F46c65C17AA6b4102046935F33301f0510B163A",
+  "simpleAccountFactory": "0x6C583EE7f3a80cB53dDc4789B0Af1aaFf90e55F3",
+  "paymasterUrl": ""
+}

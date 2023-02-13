@@ -10,15 +10,9 @@ import {
 // @ts-ignore
 import config from "../../config.json";
 
-// This example requires several layers of calls:
-// EntryPoint
-//  ┕> sender.executeBatch
-//    ┕> token.transfer (recipient 1)
-//    ⋮
-//    ┕> token.transfer (recipient N)
 export default async function main(
   tkn: string,
-  t: Array<string>,
+  t: string,
   amt: string,
   withPM: boolean
 ) {
@@ -33,38 +27,27 @@ export default async function main(
     config.simpleAccountFactory,
     paymasterAPI
   );
-  const sender = await accountAPI.getCounterFactualAddress();
 
   const token = ethers.utils.getAddress(tkn);
+  const to = ethers.utils.getAddress(t);
   const erc20 = new ethers.Contract(token, ERC20_ABI, provider);
   const [symbol, decimals] = await Promise.all([
     erc20.symbol(),
     erc20.decimals(),
   ]);
   const amount = ethers.utils.parseUnits(amt, decimals);
+  console.log(`Approving ${amt} ${symbol}...`);
 
-  let dest: Array<string> = [];
-  let data: Array<string> = [];
-  t.map((addr) => addr.trim()).forEach((addr) => {
-    dest = [...dest, erc20.address];
-    data = [
-      ...data,
-      erc20.interface.encodeFunctionData("transfer", [
-        ethers.utils.getAddress(addr),
-        amount,
-      ]),
-    ];
-  });
-  console.log("======================",dest);
-  
-  console.log(
-    `Batch transferring ${amt} ${symbol} to ${dest.length} recipients...`
-  );
+  // const op = await accountAPI.createSignedUserOp({
+  //   target: erc20.address,
+  //   data: erc20.interface.encodeFunctionData("transfer", [to, amount]),
+  //   ...(await getGasFee(provider)),
+  // });
+  // console.log(`Signed UserOperation: ${await printOp(op)}`);
 
-  const ac = await accountAPI._getAccountContract();
   const op = await accountAPI.createSignedUserOp({
-    target: sender,
-    data: ac.interface.encodeFunctionData("executeBatch", [dest, data]),
+    target: erc20.address,
+    data: erc20.interface.encodeFunctionData("approve", [to, amount]),
     ...(await getGasFee(provider)),
   });
   console.log(`Signed UserOperation: ${await printOp(op)}`);
@@ -81,3 +64,7 @@ export default async function main(
   const txHash = await accountAPI.getUserOpReceipt(uoHash);
   console.log(`Transaction hash: ${txHash}`);
 }
+/*
+yarn run simpleAccount erc20Approve --token 0x5803D48A7aC1bA1eFD5C2537482F8800B4a64458 --to 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D --amount 100
+yarn run simpleAccount erc20Approve --token 0xf53c9007Efc497c545222Efcd45BbB577886C5a5 --to 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D --amount 100
+*/

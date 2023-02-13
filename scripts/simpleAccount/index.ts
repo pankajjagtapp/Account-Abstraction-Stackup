@@ -5,6 +5,9 @@ import transfer from "./transfer";
 import erc20Transfer from "./erc20Transfer";
 import batchTransfer from "./batchTransfer";
 import batchErc20Transfer from "./batchErc20Transfer";
+import erc20Approve from "./erc20Approve";
+import uniswapAddLiquidity from "./uniswapAddLiquidity";
+import atomicUniswapAddLiquidity from "./atomicUniswapAddLiquidity";
 
 const program = new Command();
 
@@ -42,6 +45,17 @@ program
   );
 
 program
+  .command("erc20Approve")
+  .description("Approve ERC-20 token")
+  .option("-pm, --withPaymaster", "Use a paymaster for this transaction")
+  .requiredOption("-tkn, --token <address>", "The token address")
+  .requiredOption("-t, --to <address>", "The recipient address")
+  .requiredOption("-amt, --amount <decimal>", "Amount of the token to approve")
+  .action(async (opts) =>
+    erc20Approve(opts.token, opts.to, opts.amount, Boolean(opts.withPaymaster))
+  );
+
+program
   .command("batchTransfer")
   .description("Batch transfer ETH")
   .option("-pm, --withPaymaster", "Use a paymaster for this transaction")
@@ -71,6 +85,40 @@ program
       opts.amount,
       Boolean(opts.withPaymaster)
     )
+  );
+
+program
+  .command("uniswapAddLiquidity")
+  .description("Add Liquidity")
+  .option("-pm, --withPaymaster", "Use a paymaster for this transaction")
+  .requiredOption("-router, --router <address>", "The router address")
+  .requiredOption("-tokenA, --tokenA <address>", "The token address")
+  .requiredOption("-tokenB, --tokenB <address>", "The token address")
+  .requiredOption("-amountADesired, --amountADesired <decimal>", "Amount A Desired")
+  .requiredOption("-amountBDesired, --amountBDesired <decimal>", "Amount B Desired")
+  .requiredOption("-amountAMin, --amountAMin <decimal>", "Amount A Min")
+  .requiredOption("-amountBMin, --amountBMin <decimal>", "Amount B Min")
+  .requiredOption("-to, --to <address>", "The receiver address")
+  .requiredOption("-deadline, --deadline <timestamp>", "Deadline")
+  .action(async (opts) =>
+  uniswapAddLiquidity(opts.router, opts.tokenA, opts.tokenB, opts.amountADesired, opts.amountBDesired, opts.amountAMin, opts.amountBMin, opts.to, opts.deadline, Boolean(opts.withPaymaster))
+  );
+
+program
+  .command("atomicUniswapAddLiquidity")
+  .description("Add Liquidity")
+  .option("-pm, --withPaymaster", "Use a paymaster for this transaction")
+  .requiredOption("-router, --router <address>", "The router address")
+  .requiredOption("-tokenA, --tokenA <address>", "The token address")
+  .requiredOption("-tokenB, --tokenB <address>", "The token address")
+  .requiredOption("-amountADesired, --amountADesired <decimal>", "Amount A Desired")
+  .requiredOption("-amountBDesired, --amountBDesired <decimal>", "Amount B Desired")
+  .requiredOption("-amountAMin, --amountAMin <decimal>", "Amount A Min")
+  .requiredOption("-amountBMin, --amountBMin <decimal>", "Amount B Min")
+  .requiredOption("-to, --to <address>", "The receiver address")
+  .requiredOption("-deadline, --deadline <timestamp>", "Deadline")
+  .action(async (opts) =>
+  atomicUniswapAddLiquidity(opts.router, opts.tokenA, opts.tokenB, opts.amountADesired, opts.amountBDesired, opts.amountAMin, opts.amountBMin, opts.to, opts.deadline, Boolean(opts.withPaymaster))
   );
 
 program.parse();

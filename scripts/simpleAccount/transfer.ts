@@ -24,6 +24,7 @@ export default async function main(t: string, amt: string, withPM: boolean) {
 
   const target = ethers.utils.getAddress(t);
   const value = ethers.utils.parseEther(amt);
+  
   const op = await accountAPI.createSignedUserOp({
     target,
     value,
@@ -41,6 +42,7 @@ export default async function main(t: string, amt: string, withPM: boolean) {
   console.log(`UserOpHash: ${uoHash}`);
 
   console.log("Waiting for transaction...");
+  
   const txHash = await accountAPI.getUserOpReceipt(uoHash);
   console.log(`Transaction hash: ${txHash}`);
 }
