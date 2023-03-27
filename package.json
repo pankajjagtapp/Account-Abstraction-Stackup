@@ -2,7 +2,10 @@
   "name": "erc-4337-examples",
   "version": "1.0.0",
   "description": "A collection of example scripts for working with ERC-4337.",
-  "repository": "git@github.com:stackup-wallet/erc-4337-examples.git",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/stackup-wallet/erc-4337-examples.git"
+  },
   "license": "MIT",
   "scripts": {
     "lint": "eslint . && tsc --noEmit",
@@ -14,9 +17,17 @@
   },
   "dependencies": {
     "@account-abstraction/sdk": "^0.4.0",
+    "@types/body-parser": "^1.19.2",
+    "@types/cors": "^2.8.13",
+    "@types/express": "^4.17.17",
     "axios": "^1.2.3",
+    "body-parser": "^1.20.2",
     "commander": "^10.0.0",
-    "ethers": "^5.7.2"
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "ethers": "^5.7.2",
+    "express": "^4.18.2",
+    "mongoose": "^7.0.0"
   },
   "devDependencies": {
     "@types/node": "^18.11.9",
@@ -29,5 +40,12 @@
     "prettier": "^2.8.0",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.3"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/stackup-wallet/erc-4337-examples/issues"
+  },
+  "homepage": "https://github.com/stackup-wallet/erc-4337-examples#readme",
+  "main": "explain.js",
+  "keywords": [],
+  "author": ""
 }

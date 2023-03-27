@@ -40,7 +40,7 @@ export default async function main(
 
   const sender = await accountAPI.getCounterFactualAddress();
 
-  const token1 = ethers.utils.getAddress(tokenA);  
+  const token1 = ethers.utils.getAddress(tokenA);
   const token2 = ethers.utils.getAddress(tokenB);
   const uniRouterAddr = ethers.utils.getAddress(router);
   const amount1desired = ethers.utils.parseEther(amountADesired);
@@ -60,7 +60,7 @@ export default async function main(
 
   let dest: Array<string> = [];
   let data: Array<string> = [];
-  dest = [tkn1.address,tkn2.address,uniswapRouter.address];
+  dest = [tkn1.address, tkn2.address, uniswapRouter.address];
 
   data = [
     tkn1.interface.encodeFunctionData("approve", [
@@ -89,8 +89,8 @@ export default async function main(
     data: ac.interface.encodeFunctionData("executeBatch", [dest, data]),
     ...(await getGasFee(provider)),
   });
-
-  console.log(`Signed UserOperation: ${await printOp(op)}`);
+  const x = await printOp(op);
+  console.log(`Signed UserOperation: ${x}`);
 
   const client = await getHttpRpcClient(
     provider,
@@ -104,6 +104,12 @@ export default async function main(
 
   const txHash = await accountAPI.getUserOpReceipt(uoHash);
   console.log(`Transaction hash: ${txHash}`);
+
+  let obj = {
+    transactionHash: txHash,
+  };
+
+  return obj;
 }
 
 /*

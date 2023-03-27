@@ -16,6 +16,8 @@ export default async function main(
   amt: string,
   withPM: boolean
 ) {
+
+console.log("amt: ", amt);
   const provider = new ethers.providers.JsonRpcProvider(config.rpcUrl);
   const paymasterAPI = withPM
     ? getVerifyingPaymaster(config.paymasterUrl, config.entryPoint)
@@ -56,4 +58,10 @@ export default async function main(
   console.log("Waiting for transaction...");
   const txHash = await accountAPI.getUserOpReceipt(uoHash);
   console.log(`Transaction hash: ${txHash}`);
+
+  const obj = {
+    transactionHash: txHash,
+  };
+  
+  return obj;
 }

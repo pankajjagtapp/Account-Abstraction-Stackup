@@ -38,13 +38,6 @@ export default async function main(
   const amount = ethers.utils.parseUnits(amt, decimals);
   console.log(`Approving ${amt} ${symbol}...`);
 
-  // const op = await accountAPI.createSignedUserOp({
-  //   target: erc20.address,
-  //   data: erc20.interface.encodeFunctionData("transfer", [to, amount]),
-  //   ...(await getGasFee(provider)),
-  // });
-  // console.log(`Signed UserOperation: ${await printOp(op)}`);
-
   const op = await accountAPI.createSignedUserOp({
     target: erc20.address,
     data: erc20.interface.encodeFunctionData("approve", [to, amount]),
@@ -63,6 +56,12 @@ export default async function main(
   console.log("Waiting for transaction...");
   const txHash = await accountAPI.getUserOpReceipt(uoHash);
   console.log(`Transaction hash: ${txHash}`);
+
+  const obj = {
+    transactionHash: txHash,
+  };
+  
+  return obj;
 }
 /*
 yarn run simpleAccount erc20Approve --token 0x5803D48A7aC1bA1eFD5C2537482F8800B4a64458 --to 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D --amount 100
